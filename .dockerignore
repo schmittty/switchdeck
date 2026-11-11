@@ -8,3 +8,4 @@ data
 docker-compose*.yml
 install.sh
 .DS_Store
+docs

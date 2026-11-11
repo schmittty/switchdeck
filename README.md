@@ -7,6 +7,14 @@ An on-prem console for **Lantronix / Transition Networks** switches, in the spir
 | SISPM1040 (unified API) | SISPM1040-582-LRT, SISPM1040-384-LRT-C, SISPM1040-362-LRT | `/api/*` JSON, session cookie `seid` (API User Guide 33824) |
 | LS Series | LSS2200-8P | `https://<ip>:8000/rest/v1/*`, JWT bearer (REST API Guide 33863) |
 
+![SwitchDeck dashboard](docs/screenshots/dashboard.png)
+
+| Device detail | Config diff | Settings |
+|---|---|---|
+| ![Device](docs/screenshots/device-overview.png) | ![Diff](docs/screenshots/backup-diff.png) | ![Settings](docs/screenshots/settings.png) |
+
+More in the **[screenshot gallery](docs/screenshots/README.md)**.
+
 The backend uses only the Python standard library (3.11+). `cryptography` is optional and is used for stronger credential encryption; the Docker image includes it.
 
 ---
