@@ -1,0 +1,10 @@
+.git
+.github
+data
+.env
+**/__pycache__
+**/*.pyc
+*.md
+docker-compose*.yml
+install.sh
+.DS_Store

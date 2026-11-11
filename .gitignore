@@ -1,0 +1,11 @@
+# runtime data (database, backups, firmware, encryption key)
+data/
+*.db
+*.db-wal
+*.db-shm
+secret.key
+initial-admin-password.txt
+.env
+__pycache__/
+*.pyc
+.DS_Store

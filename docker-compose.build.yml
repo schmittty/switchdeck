@@ -1,0 +1,18 @@
+# Build SwitchDeck from source instead of pulling the published image.
+#   From a clone of this repo:   cp .env.example .env && docker compose -f docker-compose.build.yml up -d --build
+#   Without cloning:             SD_BUILD_CONTEXT=https://github.com/schmittty/switchdeck.git#main docker compose -f docker-compose.build.yml up -d --build
+
+services:
+  switchdeck:
+    build:
+      context: ${SD_BUILD_CONTEXT:-.}
+    image: switchdeck:local
+    container_name: switchdeck
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - switchdeck-data:/data
+    env_file: .env
+
+volumes:
+  switchdeck-data:

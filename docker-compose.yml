@@ -1,0 +1,18 @@
+# SwitchDeck — pulls the prebuilt image published from github.com/schmittty/switchdeck.
+# Settings live in .env next to this file (see .env.example). Normally installed by install.sh.
+
+services:
+  switchdeck:
+    image: ${SD_IMAGE:-ghcr.io/schmittty/switchdeck:latest}
+    container_name: switchdeck
+    restart: unless-stopped
+    network_mode: host          # real syslog source IPs, direct discovery, switches reach :8081 for firmware
+    volumes:
+      - switchdeck-data:/data   # database, backups, firmware library, encryption key
+    env_file: .env
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+
+volumes:
+  switchdeck-data:
