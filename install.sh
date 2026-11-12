@@ -108,12 +108,13 @@ build_local() {
 
 wait_ready() {
   local port; port="$(grep -E '^SD_HTTP_PORT=' "$DIR/.env" | cut -d= -f2)"; port="${port:-8080}"
+  local scheme="http"; grep -qE '^SD_TLS_CERT=.+' "$DIR/.env" && scheme="https"
   say "Waiting for SwitchDeck on :$port"
   for _ in $(seq 1 30); do
-    if curl -fsS "http://127.0.0.1:$port/" >/dev/null 2>&1; then
+    if curl -kfsS "$scheme://127.0.0.1:$port/" >/dev/null 2>&1; then
       local ip; ip="$(grep -E '^SD_PUBLIC_HOST=' "$DIR/.env" | cut -d= -f2)"
       echo
-      say "SwitchDeck is up:  http://${ip:-<this-host>}:$port"
+      say "SwitchDeck is up:  $scheme://${ip:-<this-host>}:$port"
       local pw; pw="$(docker exec switchdeck cat /data/initial-admin-password.txt 2>/dev/null || true)"
       if [ -n "$pw" ]; then
         echo "    first sign-in:    $pw   (you'll be asked to set a new password)"

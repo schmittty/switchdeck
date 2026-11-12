@@ -20,5 +20,5 @@ VOLUME ["/data"]
 EXPOSE 8080 8081 5514/udp
 
 USER switchdeck
-HEALTHCHECK --interval=30s --timeout=5s CMD python -c "import urllib.request,os;urllib.request.urlopen(f'http://127.0.0.1:{os.environ[\"SD_HTTP_PORT\"]}/')" || exit 1
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s CMD python -c "import socket,os;socket.create_connection(('127.0.0.1',int(os.environ['SD_HTTP_PORT'])),3).close()" || exit 1
 CMD ["python", "-m", "app.main"]

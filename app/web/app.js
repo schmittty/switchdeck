@@ -333,7 +333,7 @@ async function drawerRefresh() {
   const scroll = $(".dbody", dr)?.scrollTop || 0;
   dr.innerHTML = `<header><span class="dot ${d.status}"></span><div style="flex:1;min-width:0"><h2>${esc(d.name)}</h2>
     <div class="muted" style="font-size:12.5px">${esc(d.model || d.family)} · <span class="mono">${esc(d.host)}</span> · ${d.status === "online" ? "seen " + fmt.ago(d.last_seen) : esc(d.last_error || d.status)}</div></div>
-    ${d.adopted ? "" : `<button class="btn sm primary need-admin" id="adopt">Adopt</button>`}
+    <button class="btn sm ${d.adopted ? "" : "primary"} need-admin" id="adopt" title="${d.adopted ? "Push the management baseline again (syslog target, NTP) and take a new baseline backup" : "Push the management baseline and take a baseline backup"}">${d.adopted ? "Re-adopt" : "Adopt"}</button>
     <button class="btn sm" id="dpoll">${icon("refresh")}Poll</button><button class="btn sm" id="dclose">${icon("x")}</button></header>
     <div class="tabs">${tabs.map(([k, l]) => `<button data-tab="${k}" class="${S.dtab === k ? "active" : ""}">${l}</button>`).join("")}</div>
     <div class="dbody" id="dbody"></div>`;
@@ -346,10 +346,10 @@ async function drawerRefresh() {
 }
 
 function adoptModal(d) {
-  modal(`Adopt ${d.name}`, `<p>SwitchDeck will push its management baseline to this switch:</p>
+  modal(`${d.adopted ? "Re-adopt" : "Adopt"} ${d.name}`, `<p>SwitchDeck will push its management baseline to this switch:</p>
     <ul class="muted"><li>Syslog target → this server</li><li>NTP servers from Settings</li><li>Save startup-config</li><li>Take a baseline config backup</li></ul>
     <label class="f"><span>Set system name on the switch (optional)</span><input class="input" name="name" value="${esc(d.name)}"></label>`,
-    { actions: [{ label: "Adopt", cls: "primary", run: async (m) => watchJob(await api("POST", `/api/devices/${d.id}/adopt`, { name: m.querySelector("[name=name]").value }), `Adopt ${d.name}`) }] });
+    { actions: [{ label: d.adopted ? "Re-adopt" : "Adopt", cls: "primary", run: async (m) => watchJob(await api("POST", `/api/devices/${d.id}/adopt`, { name: m.querySelector("[name=name]").value }), `Adopt ${d.name}`) }] });
 }
 
 function faceplate(ports, selected) {
